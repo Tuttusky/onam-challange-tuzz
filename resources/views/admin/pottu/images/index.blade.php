@@ -41,9 +41,10 @@
                         <td>{{ $image->is_active ? 'Yes' : 'No' }}</td>
                         <td>
                             <a href="{{ route('admin.campaigns.pottu-images.edit', [$campaign, $image]) }}" class="btn btn-sm btn-outline-light">Edit</a>
-                            <form action="{{ route('admin.campaigns.pottu-images.destroy', [$campaign, $image]) }}" method="POST" class="d-inline" onsubmit="return confirm('Delete?')">
-                                @csrf @method('DELETE')
-                                <button class="btn btn-sm btn-outline-danger">Delete</button>
+                            <form action="{{ route('admin.campaigns.pottu-images.destroy', [$campaign, $image]) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this photo?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
                             </form>
                         </td>
                     </tr>

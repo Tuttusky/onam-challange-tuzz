@@ -37,9 +37,18 @@
             <div class="col-md-3"><label class="form-label">Sort Order</label><input type="number" name="sort_order" class="form-control" value="{{ old('sort_order', $image->sort_order ?? 0) }}"></div>
             <div class="col-md-3 d-flex align-items-end"><div class="form-check"><input type="checkbox" name="is_active" value="1" class="form-check-input" id="active" @checked(old('is_active', $image->is_active ?? true))><label for="active" class="form-check-label">Active</label></div></div>
         </div>
-        <div class="mt-4">
-            <button class="btn btn-admin-primary">Save Image</button>
-            <a href="{{ route('admin.campaigns.pottu-images.index', $campaign) }}" class="btn btn-outline-light">Cancel</a>
+        <div class="mt-4 d-flex align-items-center justify-content-between">
+            <div>
+                <button type="submit" class="btn btn-admin-primary">Save Image</button>
+                <a href="{{ route('admin.campaigns.pottu-images.index', $campaign) }}" class="btn btn-outline-light ms-2">Cancel</a>
+            </div>
+            @if($image->exists)
+            <form action="{{ route('admin.campaigns.pottu-images.destroy', [$campaign, $image]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this photo permanently?')">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-danger">Delete Photo</button>
+            </form>
+            @endif
         </div>
     </form>
 </div>

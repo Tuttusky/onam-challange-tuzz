@@ -38,30 +38,31 @@ class PottuImageController extends Controller
             ->with('success', 'Girl image uploaded successfully.');
     }
 
-    public function edit(Campaign $campaign, PottuImage $pottuImage): View
+    public function edit(Campaign $campaign, PottuImage $pottu_image): View
     {
-        abort_unless((int) $pottuImage->campaign_id === (int) $campaign->id, 404);
-
         return view('admin.pottu.images.form', [
             'campaign' => $campaign,
-            'image' => $pottuImage,
+            'image' => $pottu_image,
         ]);
     }
 
-    public function update(Request $request, Campaign $campaign, PottuImage $pottuImage): RedirectResponse
+    public function update(Request $request, Campaign $campaign, PottuImage $pottu_image): RedirectResponse
     {
-        abort_unless((int) $pottuImage->campaign_id === (int) $campaign->id, 404);
-        $pottuImage->update($this->validated($request, $campaign, $pottuImage));
+        $pottu_image->update($this->validated($request, $campaign, $pottu_image));
 
         return redirect()
             ->route('admin.campaigns.pottu-images.index', $campaign)
             ->with('success', 'Girl image updated successfully.');
     }
 
-    public function destroy(Campaign $campaign, PottuImage $pottuImage): RedirectResponse
+    public function destroy(Campaign $campaign, PottuImage $pottu_image): RedirectResponse
     {
-        abort_unless((int) $pottuImage->campaign_id === (int) $campaign->id, 404);
-        $pottuImage->delete();
+        if (! empty($pottu_image->path) && str_contains($pottu_image->path, 'pottu-custom-images')) {
+            $relativePath = str_replace('/storage/', '', $pottu_image->path);
+            \Illuminate\Support\Facades\Storage::disk('public')->delete($relativePath);
+        }
+
+        $pottu_image->delete();
 
         return redirect()
             ->route('admin.campaigns.pottu-images.index', $campaign)
