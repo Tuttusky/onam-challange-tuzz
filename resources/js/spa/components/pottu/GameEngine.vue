@@ -759,8 +759,12 @@ function onImageError(image, event) {
                     >
                         <span>{{ t('create_challenge') }}</span>
                     </button>
-                    <button type="button" class="btn btn-glass" @click="goToFullResult">
-                        {{ t('view_full_result') }}
+                    <button type="button" class="btn-secondary-pottu w-100" @click="goToFullResult">
+                        <span>{{ t('view_full_result') }}</span>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <line x1="5" y1="12" x2="19" y2="12" />
+                            <polyline points="12 5 19 12 12 19" />
+                        </svg>
                     </button>
                 </div>
             </div>
@@ -1349,6 +1353,38 @@ function onImageError(image, event) {
 .cta-btn-pottu:disabled {
     opacity: 0.65;
     cursor: not-allowed;
+}
+
+.btn-secondary-pottu {
+    width: 100%;
+    min-height: 50px;
+    border: 2px solid #6366f1;
+    border-radius: 999px;
+    padding: 0.8rem 1.2rem;
+    background: #ffffff;
+    color: #4f46e5;
+    font-size: 0.95rem;
+    font-weight: 800;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    box-shadow: 0 4px 16px rgba(99, 102, 241, 0.15);
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-secondary-pottu:hover,
+.btn-secondary-pottu:focus {
+    background: #6366f1;
+    color: #ffffff;
+    border-color: #6366f1;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px rgba(99, 102, 241, 0.35);
+}
+
+.btn-secondary-pottu:active {
+    transform: scale(0.985);
 }
 
 /* How-to sheet */
