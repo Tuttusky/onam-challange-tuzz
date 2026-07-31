@@ -5,7 +5,14 @@ const emits = defineEmits(['finish']);
 const visible = ref(true);
 const fadeOut = ref(false);
 
+function triggerBgm() {
+    if (typeof window !== 'undefined' && window.playBgmOnUserGesture) {
+        window.playBgmOnUserGesture();
+    }
+}
+
 onMounted(() => {
+    triggerBgm();
     // 2 seconds preload timer
     setTimeout(() => {
         fadeOut.value = true;
@@ -19,7 +26,13 @@ onMounted(() => {
 
 <template>
     <Teleport to="body">
-        <div v-if="visible" class="splash-screen" :class="{ 'splash-screen--fade': fadeOut }">
+        <div
+            v-if="visible"
+            class="splash-screen"
+            :class="{ 'splash-screen--fade': fadeOut }"
+            @click="triggerBgm"
+            @touchstart.passive="triggerBgm"
+        >
             <div class="splash-screen__bg" aria-hidden="true">
                 <div class="splash-screen__orb splash-screen__orb--1"></div>
                 <div class="splash-screen__orb splash-screen__orb--2"></div>
@@ -37,7 +50,7 @@ onMounted(() => {
                     <div class="splash-screen__progress-bar">
                         <div class="splash-screen__progress-fill"></div>
                     </div>
-                    <p class="splash-screen__text">Loading Game...</p>
+                    <p class="splash-screen__text">ഗെയിം ലോഡ് ചെയ്യുന്നു...</p>
                 </div>
             </div>
         </div>

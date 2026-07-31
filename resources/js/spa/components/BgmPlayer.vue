@@ -89,6 +89,7 @@ onMounted(() => {
     initAudio();
     startBgm();
     addInteractionListeners();
+    window.playBgmOnUserGesture = startBgm;
 });
 
 onUnmounted(() => {

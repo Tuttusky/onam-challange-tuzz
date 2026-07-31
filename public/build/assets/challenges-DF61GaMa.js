@@ -1,1 +1,0 @@
-import{E as t}from"./main-0t2qh4co.js";const n=s=>t.get(`/challenges/${s}`),l=(s,e)=>t.post(`/challenges/${s}/join`,{name:e.name,player_uuid:e.uuid??e.player_uuid??null}),c=(s,e=null)=>t.get(`/challenges/${s}/results`,{params:e?{challenger_uuid:e}:{}}),r=(s,e)=>t.post(`/challenges/${s}/shares`,e),o=(s,e)=>t.post(`/challenges/${s}/rematch`,e);export{n as a,o as b,c as g,l as j,r};
