@@ -65,12 +65,9 @@
         <a href="{{ route('admin.settings.pottu') }}" class="nav-link {{ $isActive('admin.settings.pottu') ? 'active' : '' }}">
             <i class="bi bi-bullseye"></i> Pottu Challenge
         </a>
-        @php $pottuCamp = \App\Models\Campaign::where('type', 'pottu')->first(); @endphp
-        @if($pottuCamp)
-        <a href="{{ route('admin.campaigns.pottu-images.index', $pottuCamp) }}" class="nav-link {{ $isActive('admin.campaigns.pottu-images') ? 'active' : '' }}">
+        <a href="{{ route('admin.pottu-photos') }}" class="nav-link {{ $isActive('admin.pottu-photos', 'admin.campaigns.pottu-images') ? 'active' : '' }}">
             <i class="bi bi-images"></i> Pottu Girl Photos
         </a>
-        @endif
         <a href="{{ route('admin.friend-avatars.index') }}" class="nav-link {{ $isActive('admin.friend-avatars') ? 'active' : '' }}">
             <i class="bi bi-person-badge"></i> Friend Avatars
         </a>

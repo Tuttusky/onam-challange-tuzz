@@ -48,6 +48,18 @@ Route::name('admin.')->group(function () {
             Route::resource('pottu-styles', \App\Http\Controllers\Admin\PottuStyleController::class)->except(['show']);
         });
 
+        Route::get('pottu-photos', function () {
+            $campaign = \App\Models\Campaign::query()->where('type', \App\Models\Campaign::TYPE_POTTU)->first()
+                ?? \App\Models\Campaign::query()->where('slug', 'sundarikk-pottu-thodal')->first()
+                ?? \App\Models\Campaign::query()->first();
+
+            if (! $campaign) {
+                return redirect()->route('admin.campaigns.index');
+            }
+
+            return redirect()->route('admin.campaigns.pottu-images.index', $campaign);
+        })->name('pottu-photos');
+
         Route::post('questions/{question}/options', [QuestionOptionController::class, 'store'])->name('questions.options.store');
         Route::put('questions/{question}/options/{option}', [QuestionOptionController::class, 'update'])->name('questions.options.update');
         Route::delete('questions/{question}/options/{option}', [QuestionOptionController::class, 'destroy'])->name('questions.options.destroy');
