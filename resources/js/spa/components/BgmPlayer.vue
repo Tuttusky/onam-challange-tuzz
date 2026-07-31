@@ -35,6 +35,7 @@ function startBgm() {
 
 function toggleBgm(e) {
     if (e) {
+        e.preventDefault();
         e.stopPropagation();
     }
     initAudio();
@@ -50,7 +51,10 @@ function toggleBgm(e) {
         localStorage.setItem('bgm_muted', 'false');
         bgmAudio.play().then(() => {
             isPlaying.value = true;
-        }).catch((err) => console.log('BGM Play Error:', err));
+        }).catch((err) => {
+            console.log('BGM Play Error:', err);
+            isPlaying.value = false;
+        });
     }
 }
 
@@ -101,17 +105,22 @@ onUnmounted(() => {
         <button
             type="button"
             class="bgm-toggle-btn"
-            :class="{ 'bgm-toggle-btn--playing': isPlaying, 'bgm-toggle-btn--muted': isMuted || !isPlaying }"
-            :aria-label="isPlaying ? 'Pause Background Music' : 'Play Background Music'"
-            @click="toggleBgm"
-            @touchstart.stop="toggleBgm"
+            :class="{ 'bgm-toggle-btn--playing': isPlaying && !isMuted, 'bgm-toggle-btn--muted': isMuted || !isPlaying }"
+            :aria-label="isPlaying && !isMuted ? 'Pause Background Music' : 'Play Background Music'"
+            @click.stop.prevent="toggleBgm"
         >
-            <span v-if="isPlaying && !isMuted" class="bgm-waves" aria-hidden="true">
-                <span class="bar bar--1"></span>
-                <span class="bar bar--2"></span>
-                <span class="bar bar--3"></span>
-            </span>
-            <span v-else class="bgm-icon" aria-hidden="true">🔇</span>
+            <!-- Speaker ON Icon (Playing) -->
+            <svg v-if="isPlaying && !isMuted" class="speaker-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                <path d="M15.54 8.46a5 5 0 0 1 0 7.07" class="speaker-wave-1"></path>
+                <path d="M19.07 4.93a10 10 0 0 1 0 14.14" class="speaker-wave-2"></path>
+            </svg>
+
+            <!-- Speaker OFF / Muted Icon -->
+            <svg v-else class="speaker-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="1" y1="1" x2="23" y2="23"></line>
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            </svg>
         </button>
     </Teleport>
 </template>
@@ -122,26 +131,26 @@ onUnmounted(() => {
     top: 0.75rem;
     right: 0.75rem;
     z-index: 99999;
-    width: 34px;
-    height: 34px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
-    border: 1px solid rgba(255, 255, 255, 0.75);
-    background: rgba(15, 23, 42, 0.6);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
+    border: 1.5px solid rgba(255, 255, 255, 0.85);
+    background: rgba(15, 23, 42, 0.65);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     color: #ffffff;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    transition: transform 0.15s ease, background-color 0.15s ease;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+    transition: transform 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
     touch-action: manipulation;
 }
 
 .bgm-toggle-btn:hover {
-    transform: scale(1.06);
-    background: rgba(15, 23, 42, 0.85);
+    transform: scale(1.08);
+    background: rgba(15, 23, 42, 0.88);
 }
 
 .bgm-toggle-btn:active {
@@ -149,51 +158,36 @@ onUnmounted(() => {
 }
 
 .bgm-toggle-btn--playing {
-    border-color: rgba(245, 158, 11, 0.9);
-    background: rgba(180, 83, 9, 0.85);
-    box-shadow: 0 3px 12px rgba(245, 158, 11, 0.35);
+    border-color: #f59e0b;
+    background: linear-gradient(135deg, #d97706, #b45309);
+    box-shadow: 0 4px 14px rgba(217, 119, 6, 0.45);
 }
 
-.bgm-waves {
-    display: flex;
-    align-items: flex-end;
-    gap: 2px;
-    height: 13px;
+.bgm-toggle-btn--muted {
+    border-color: rgba(255, 255, 255, 0.6);
+    background: rgba(15, 23, 42, 0.7);
 }
 
-.bar {
-    width: 2.2px;
-    background: #ffffff;
-    border-radius: 99px;
-    animation: sound-wave 1s ease-in-out infinite alternate;
+.speaker-icon {
+    display: block;
+    width: 16px;
+    height: 16px;
 }
 
-.bar--1 {
-    height: 60%;
-    animation-delay: 0s;
+.speaker-wave-1 {
+    animation: wave-pulse 1.2s ease-in-out infinite alternate;
 }
 
-.bar--2 {
-    height: 100%;
-    animation-delay: -0.3s;
+.speaker-wave-2 {
+    animation: wave-pulse 1.2s ease-in-out infinite alternate 0.3s;
 }
 
-.bar--3 {
-    height: 45%;
-    animation-delay: -0.6s;
-}
-
-.bgm-icon {
-    font-size: 0.85rem;
-    line-height: 1;
-}
-
-@keyframes sound-wave {
+@keyframes wave-pulse {
     0% {
-        height: 30%;
+        opacity: 0.3;
     }
     100% {
-        height: 100%;
+        opacity: 1;
     }
 }
 </style>
