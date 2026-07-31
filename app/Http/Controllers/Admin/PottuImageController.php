@@ -35,7 +35,7 @@ class PottuImageController extends Controller
 
         return redirect()
             ->route('admin.campaigns.pottu-images.index', $campaign)
-            ->with('success', 'Girl image added.');
+            ->with('success', 'Girl image uploaded successfully.');
     }
 
     public function edit(Campaign $campaign, PottuImage $pottuImage): View
@@ -51,11 +51,11 @@ class PottuImageController extends Controller
     public function update(Request $request, Campaign $campaign, PottuImage $pottuImage): RedirectResponse
     {
         abort_unless((int) $pottuImage->campaign_id === (int) $campaign->id, 404);
-        $pottuImage->update($this->validated($request, $campaign));
+        $pottuImage->update($this->validated($request, $campaign, $pottuImage));
 
         return redirect()
             ->route('admin.campaigns.pottu-images.index', $campaign)
-            ->with('success', 'Girl image updated.');
+            ->with('success', 'Girl image updated successfully.');
     }
 
     public function destroy(Campaign $campaign, PottuImage $pottuImage): RedirectResponse
@@ -65,25 +65,52 @@ class PottuImageController extends Controller
 
         return redirect()
             ->route('admin.campaigns.pottu-images.index', $campaign)
-            ->with('success', 'Girl image deleted.');
+            ->with('success', 'Girl image deleted successfully.');
     }
 
     /**
      * @return array<string, mixed>
      */
-    protected function validated(Request $request, Campaign $campaign): array
+    protected function validated(Request $request, Campaign $campaign, ?PottuImage $image = null): array
     {
-        return $request->validate([
+        $data = $request->validate([
             'title' => ['nullable', 'string', 'max:120'],
-            'path' => ['required', 'string', 'max:500'],
+            'image_file' => ['nullable', 'image', 'mimes:jpeg,jpg,png,webp', 'max:10240'],
+            'path' => ['nullable', 'string', 'max:500'],
             'width' => ['nullable', 'integer', 'min:1', 'max:4000'],
             'height' => ['nullable', 'integer', 'min:1', 'max:4000'],
             'sort_order' => ['nullable', 'integer', 'min:0'],
             'is_active' => ['sometimes', 'boolean'],
-        ]) + [
+        ]);
+
+        $imagePath = $data['path'] ?? $image?->path ?? '';
+
+        if ($request->hasFile('image_file')) {
+            $file = $request->file('image_file');
+            $storedPath = $file->store('pottu-custom-images', 'public');
+            $imagePath = \Illuminate\Support\Facades\Storage::url($storedPath);
+
+            if (empty($data['width']) || empty($data['height'])) {
+                [$w, $h] = @getimagesize($file->getRealPath()) ?: [600, 900];
+                $data['width'] = $data['width'] ?? $w;
+                $data['height'] = $data['height'] ?? $h;
+            }
+        }
+
+        if (empty($imagePath)) {
+            throw \Illuminate\Validation\ValidationException::withMessages([
+                'image_file' => 'Please upload an image file or enter an image URL.',
+            ]);
+        }
+
+        return [
             'campaign_id' => $campaign->id,
+            'title' => $data['title'] ?? 'Onam Girl',
+            'path' => $imagePath,
+            'width' => (int) ($data['width'] ?? 600),
+            'height' => (int) ($data['height'] ?? 900),
+            'sort_order' => (int) ($data['sort_order'] ?? 0),
             'is_active' => $request->boolean('is_active', true),
-            'sort_order' => (int) $request->input('sort_order', 0),
         ];
     }
 }
