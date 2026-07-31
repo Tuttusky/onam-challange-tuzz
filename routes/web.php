@@ -16,5 +16,24 @@ Route::get('/robots.txt', function (SeoService $seo) {
     ]);
 });
 
+Route::get('/run-migrations-secret', function () {
+    try {
+        \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
+        \Illuminate\Support\Facades\Artisan::call('db:seed', ['--force' => true]);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Database migrated and seeded successfully!',
+            'output' => \Illuminate\Support\Facades\Artisan::output()
+        ]);
+    } catch (\Throwable $e) {
+        return response()->json([
+            'status' => 'error',
+            'message' => $e->getMessage(),
+            'trace' => $e->getTraceAsString()
+        ], 500);
+    }
+});
+
 Route::get('/{any?}', [SpaController::class, 'index'])
-    ->where('any', '^(?!admin(?:/|$)|api(?:/|$)).*$');
+    ->where('any', '^(?!admin(?:/|$)|api(?:/|$)|run-migrations-secret).*$');
+
