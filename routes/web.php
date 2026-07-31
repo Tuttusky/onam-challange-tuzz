@@ -29,9 +29,15 @@ Route::get('/run-migrations-secret', function () {
         \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
         \Illuminate\Support\Facades\Artisan::call('db:seed', ['--force' => true]);
 
+        $mainCampaign = \App\Models\Campaign::where('slug', 'sundarikk-pottu-thodal')->first();
+        if ($mainCampaign) {
+            \App\Models\PottuImage::where('campaign_id', '!=', $mainCampaign->id)->update(['campaign_id' => $mainCampaign->id]);
+            \App\Models\Campaign::where('id', '!=', $mainCampaign->id)->where('type', 'sundarikk_pottu')->delete();
+        }
+
         return response()->json([
             'status' => 'success',
-            'message' => 'Database migrated and seeded successfully!',
+            'message' => 'Database migrated, seeded, and campaign photos consolidated successfully!',
             'db_connection' => config('database.default'),
             'output' => \Illuminate\Support\Facades\Artisan::output()
         ]);

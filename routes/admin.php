@@ -49,8 +49,8 @@ Route::name('admin.')->group(function () {
         });
 
         Route::get('pottu-photos', function () {
-            $campaign = \App\Models\Campaign::query()->where('type', \App\Models\Campaign::TYPE_POTTU)->first()
-                ?? \App\Models\Campaign::query()->where('slug', 'sundarikk-pottu-thodal')->first()
+            $campaign = \App\Models\Campaign::query()->where('slug', 'sundarikk-pottu-thodal')->first()
+                ?? \App\Models\Campaign::query()->where('type', \App\Models\Campaign::TYPE_POTTU)->first()
                 ?? \App\Models\Campaign::query()->first();
 
             if (! $campaign) {
