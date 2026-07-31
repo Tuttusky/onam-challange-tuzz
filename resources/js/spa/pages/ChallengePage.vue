@@ -12,6 +12,7 @@ import * as settingsApi from '@/api/settings';
 import { useSound } from '@/composables/useSound';
 import { extractChallengeToken } from '@/utils/challengeToken';
 import { usePottuFlowI18n } from '@/composables/usePottuFlowI18n';
+import { deviceStorage } from '@/utils/deviceStorage';
 
 const route = useRoute();
 const router = useRouter();
@@ -24,7 +25,7 @@ const { tap } = useSound();
 const { t } = usePottuFlowI18n();
 
 const token = computed(() => route.params.token);
-const name = ref('');
+const name = ref(playerStore.name || deviceStorage.getPlayerName() || '');
 const challenge = ref(null);
 const campaignSlug = ref('onam-dare-challenge');
 const isPottuChallenge = computed(() => challenge.value?.campaign?.type === 'sundarikk_pottu');
@@ -107,7 +108,13 @@ async function acceptChallenge() {
     tap();
 
     try {
-        playerStore.setName(name.value.trim());
+        const trimmedName = name.value.trim();
+        playerStore.setName(trimmedName);
+        deviceStorage.savePlayerName(trimmedName);
+        deviceStorage.savePlayedChallenge(token.value, {
+            creatorName: creatorName.value,
+            title: challengeTitle.value,
+        });
         sessionStore.reset();
         pottuStore.reset();
 

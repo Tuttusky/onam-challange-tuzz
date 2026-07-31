@@ -8,6 +8,7 @@ import * as challengesApi from '@/api/challenges';
 import * as shareCardsApi from '@/api/shareCards';
 import { buildChallengeUrl, extractChallengeToken } from '@/utils/challengeToken';
 import { usePottuFlowI18n } from '@/composables/usePottuFlowI18n';
+import { deviceStorage } from '@/utils/deviceStorage';
 import PottuFlowStepper from '@/components/pottu/PottuFlowStepper.vue';
 
 const route = useRoute();
@@ -126,6 +127,11 @@ onMounted(async () => {
         if (canonicalToken && canonicalToken !== token.value) {
             router.replace({ name: 'share', params: { token: canonicalToken } });
         }
+
+        deviceStorage.saveCreatedChallenge(canonicalToken || token.value, shareUrl.value, {
+            creatorName: creatorName.value,
+            title: challengeTitle.value,
+        });
     } catch {
         // Optional enrichment
     }

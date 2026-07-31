@@ -1,12 +1,12 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
+import { deviceStorage } from '@/utils/deviceStorage';
 
 const UUID_KEY = 'player_uuid';
-const NAME_KEY = 'player_name';
 
 export const usePlayerStore = defineStore('player', () => {
     const uuid = ref(localStorage.getItem(UUID_KEY) || null);
-    const name = ref(localStorage.getItem(NAME_KEY) || '');
+    const name = ref(deviceStorage.getPlayerName());
 
     function setPlayer(player) {
         if (player?.uuid) {
@@ -15,20 +15,23 @@ export const usePlayerStore = defineStore('player', () => {
         }
         if (player?.name) {
             name.value = player.name;
-            localStorage.setItem(NAME_KEY, player.name);
+            deviceStorage.savePlayerName(player.name);
+            deviceStorage.saveCreatorName(player.name);
         }
     }
 
     function setName(value) {
-        name.value = value.trim();
-        localStorage.setItem(NAME_KEY, name.value);
+        const trimmed = value.trim();
+        name.value = trimmed;
+        deviceStorage.savePlayerName(trimmed);
+        deviceStorage.saveCreatorName(trimmed);
     }
 
     function clear() {
         uuid.value = null;
         name.value = '';
         localStorage.removeItem(UUID_KEY);
-        localStorage.removeItem(NAME_KEY);
+        deviceStorage.savePlayerName('');
     }
 
     return {

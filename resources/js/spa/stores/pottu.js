@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 import * as pottuApi from '@/api/pottu';
 import { resolvePottuImageUrl } from '@/composables/resolvePottuImageUrl';
+import { deviceStorage } from '@/utils/deviceStorage';
 
 function normalizeImages(images = []) {
     return images.map((image) => ({
@@ -54,11 +55,23 @@ export const usePottuStore = defineStore('pottu', () => {
     }
 
     async function loadConfig(slug) {
-        const { data } = await pottuApi.getConfig(slug);
-        const payload = data.data ?? data;
-        images.value = normalizeImages(payload.images ?? []);
-        styles.value = payload.styles ?? [];
-        settings.value = payload.settings ?? {};
+        const cached = deviceStorage.getGameConfigCache();
+        if (cached && (!images.value || images.value.length === 0)) {
+            images.value = normalizeImages(cached.images ?? []);
+            styles.value = cached.styles ?? [];
+            settings.value = cached.settings ?? {};
+        }
+
+        try {
+            const { data } = await pottuApi.getConfig(slug);
+            const payload = data.data ?? data;
+            images.value = normalizeImages(payload.images ?? []);
+            styles.value = payload.styles ?? [];
+            settings.value = payload.settings ?? {};
+            deviceStorage.saveGameConfigCache(payload);
+        } catch (err) {
+            console.warn('Network load config failed, fallback to cache:', err);
+        }
     }
 
     function setPlacement(value) {
