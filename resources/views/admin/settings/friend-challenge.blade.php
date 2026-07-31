@@ -58,6 +58,36 @@
             </div>
         </div>
 
+        <h5 class="text-white mb-3">How to Play Popup (Friend Invites)</h5>
+        <div class="row g-3 mb-4">
+            <div class="col-12">
+                <div class="form-check">
+                    <input type="checkbox" name="show_how_to_play_popup" value="1" class="form-check-input" id="popup_enabled" @checked(old('show_how_to_play_popup', $settings['show_how_to_play_popup'] ?? true))>
+                    <label for="popup_enabled" class="form-check-label">Show "How to Play" Popup when friend enters name on invite page</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Popup Title</label>
+                <input type="text" name="how_to_play_title" class="form-control" value="{{ old('how_to_play_title', $settings['how_to_play_title'] ?? 'How to Play This Challenge 🎯') }}">
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Popup Subtitle / Introduction</label>
+                <input type="text" name="how_to_play_content" class="form-control" value="{{ old('how_to_play_content', $settings['how_to_play_content'] ?? 'Follow these quick steps to beat your friend\'s score:') }}">
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Step 1 Instruction</label>
+                <input type="text" name="how_to_play_step_1" class="form-control" value="{{ old('how_to_play_step_1', $settings['how_to_play_step_1'] ?? 'Enter your name & accept the challenge') }}">
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Step 2 Instruction</label>
+                <input type="text" name="how_to_play_step_2" class="form-control" value="{{ old('how_to_play_step_2', $settings['how_to_play_step_2'] ?? 'Drag the pottu dot to the forehead within 30 seconds') }}">
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Step 3 Instruction</label>
+                <input type="text" name="how_to_play_step_3" class="form-control" value="{{ old('how_to_play_step_3', $settings['how_to_play_step_3'] ?? 'Check your live accuracy score and beat your friend!') }}">
+            </div>
+        </div>
+
         <button type="submit" class="btn btn-admin-primary">Save Settings</button>
     </form>
 </div>

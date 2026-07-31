@@ -88,13 +88,7 @@ class WebsiteSettingsService
      */
     public static function getFriendChallengeSettings(): array
     {
-        $stored = static::get('friend_challenge_settings');
-
-        if (is_array($stored) && ! empty($stored)) {
-            return $stored;
-        }
-
-        return static::getGroup('friend_challenge') ?: [
+        $defaults = [
             'enable_photo_upload' => true,
             'enable_avatar_selection' => true,
             'max_image_size_mb' => (int) static::get('max_upload_size_mb', 5),
@@ -104,7 +98,19 @@ class WebsiteSettingsService
             'max_rematches' => 10,
             'max_shares' => 0,
             'media_expiry_hours' => 0,
+            'show_how_to_play_popup' => true,
+            'how_to_play_title' => 'How to Play This Challenge 🎯',
+            'how_to_play_content' => 'Follow these quick steps to beat your friend\'s score:',
+            'how_to_play_step_1' => 'Enter your name & accept the challenge',
+            'how_to_play_step_2' => 'Drag the pottu dot to the forehead within 30 seconds',
+            'how_to_play_step_3' => 'Check your live accuracy score and beat your friend!',
         ];
+
+        if (is_array($stored) && ! empty($stored)) {
+            return array_merge($defaults, $stored);
+        }
+
+        return static::getGroup('friend_challenge') ? array_merge($defaults, static::getGroup('friend_challenge')) : $defaults;
     }
 
     public static function getFriendChallengeSetting(string $key, mixed $default = null): mixed

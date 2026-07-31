@@ -29,6 +29,12 @@ class FriendChallengeSettingController extends Controller
             'max_rematches' => ['nullable', 'integer', 'min:0', 'max:100'],
             'max_shares' => ['nullable', 'integer', 'min:0', 'max:10000'],
             'media_expiry_hours' => ['nullable', 'integer', 'min:0', 'max:8760'],
+            'show_how_to_play_popup' => ['sometimes', 'boolean'],
+            'how_to_play_title' => ['nullable', 'string', 'max:255'],
+            'how_to_play_content' => ['nullable', 'string', 'max:1000'],
+            'how_to_play_step_1' => ['nullable', 'string', 'max:255'],
+            'how_to_play_step_2' => ['nullable', 'string', 'max:255'],
+            'how_to_play_step_3' => ['nullable', 'string', 'max:255'],
         ]);
 
         $types = array_values(array_filter(array_map('trim', explode(',', (string) ($data['allowed_image_types'] ?? 'image/jpeg,image/png,image/webp')))));
@@ -43,6 +49,12 @@ class FriendChallengeSettingController extends Controller
             'max_rematches' => (int) ($data['max_rematches'] ?? 10),
             'max_shares' => (int) ($data['max_shares'] ?? 0),
             'media_expiry_hours' => (int) ($data['media_expiry_hours'] ?? 0),
+            'show_how_to_play_popup' => $request->boolean('show_how_to_play_popup', true),
+            'how_to_play_title' => $data['how_to_play_title'] ?? 'How to Play This Challenge 🎯',
+            'how_to_play_content' => $data['how_to_play_content'] ?? 'Follow these quick steps to beat your friend\'s score:',
+            'how_to_play_step_1' => $data['how_to_play_step_1'] ?? 'Enter your name & accept the challenge',
+            'how_to_play_step_2' => $data['how_to_play_step_2'] ?? 'Drag the pottu dot to the forehead within 30 seconds',
+            'how_to_play_step_3' => $data['how_to_play_step_3'] ?? 'Check your live accuracy score and beat your friend!',
         ], 'friend_challenge');
 
         WebsiteSettingsService::flushCache();
