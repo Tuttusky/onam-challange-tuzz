@@ -149,13 +149,7 @@ onMounted(async () => {
         <div class="trophy-header-container text-center mb-4">
             <div class="trophy-badge-glow">
                 <div class="trophy-badge-inner d-flex align-items-center justify-content-center">
-                    <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#ea580c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" />
-                        <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" />
-                        <path d="M4 22h16" />
-                        <path d="M10 14.66V17c0 .55-.45 1-1 1H4v2h16v-2h-5c-.55 0-1-.45-1-1v-2.34" />
-                        <path d="M12 2a6 6 0 0 1 6 6v1c0 2.2-1.8 4-4 4h-4C7.8 13 6 11.2 6 9V8a6 6 0 0 1 6-6z" fill="#fef08a" />
-                    </svg>
+                    <img src="/images/logo.png" alt="Sundarikk Pottuthodal Logo" class="trophy-logo-img" />
                 </div>
             </div>
             <h1 class="share-page-title mt-3">{{ t('challenge_ready') }}</h1>
@@ -392,8 +386,8 @@ onMounted(async () => {
 
 .trophy-badge-glow {
     position: relative;
-    width: 72px;
-    height: 72px;
+    width: 90px;
+    height: 90px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -402,20 +396,29 @@ onMounted(async () => {
 .trophy-badge-glow::before {
     content: '';
     position: absolute;
-    inset: -6px;
+    inset: -8px;
     border-radius: 50%;
-    background: radial-gradient(circle, #fcd34d 0%, rgba(253, 186, 116, 0.4) 60%, transparent 100%);
+    background: radial-gradient(circle, #fcd34d 0%, rgba(253, 186, 116, 0.45) 60%, transparent 100%);
     z-index: 0;
-    opacity: 0.8;
+    opacity: 0.85;
 }
 
 .trophy-badge-inner {
-    width: 60px;
-    height: 60px;
+    width: 78px;
+    height: 78px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #f59e0b, #d97706);
+    background: #ffffff;
+    border: 2.5px solid #fde047;
+    padding: 10px;
     z-index: 1;
-    box-shadow: 0 6px 16px rgba(217, 119, 6, 0.2);
+    box-shadow: 0 8px 20px rgba(217, 119, 6, 0.22);
+}
+
+.trophy-logo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.12));
 }
 
 .share-page-title {
