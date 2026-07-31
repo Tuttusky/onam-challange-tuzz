@@ -5,6 +5,7 @@ import { useCampaignStore } from '@/stores/campaign';
 import { useUiStore } from '@/stores/ui';
 import { useTheme } from '@/composables/useTheme';
 import LoadingOverlay from '@/components/LoadingOverlay.vue';
+import AppSplashScreen from '@/components/AppSplashScreen.vue';
 
 const route = useRoute();
 const campaignStore = useCampaignStore();
@@ -41,6 +42,7 @@ watch(
         :class="{ 'spa-root--dark': uiStore.darkMode }"
         :style="themeStyle"
     >
+        <AppSplashScreen />
         <LoadingOverlay v-if="uiStore.loading" />
         <router-view v-slot="{ Component, route: currentRoute }">
             <transition name="page" mode="out-in">
