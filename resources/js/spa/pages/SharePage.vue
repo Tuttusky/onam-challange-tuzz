@@ -200,35 +200,7 @@ onMounted(async () => {
             </svg>
         </button>
 
-        <!-- Social Row (Telegram, Facebook, Instagram) -->
-        <div class="social-share-row mb-3">
-            <button type="button" class="social-share-card" @click="shareTelegram">
-                <div class="social-share-card__icon-wrapper d-flex align-items-center justify-content-center">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.12.02-1.96 1.25-5.54 3.69-.52.36-1 .53-1.42.52-.47-.01-1.37-.26-2.03-.48-.82-.27-1.47-.42-1.42-.88.03-.24.35-.49.96-.75 3.78-1.65 6.31-2.74 7.57-3.26 3.61-1.48 4.36-1.74 4.85-1.75.11 0 .35.03.51.16.13.1.17.25.19.35.02.12.02.26.01.37z" />
-                    </svg>
-                </div>
-                <span class="social-share-card__label">Telegram</span>
-            </button>
-            <button type="button" class="social-share-card" @click="shareFacebook">
-                <div class="social-share-card__icon-wrapper d-flex align-items-center justify-content-center">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 2C6.48 2 2 6.48 2 12c0 4.99 3.66 9.12 8.44 9.88v-6.99H7.9v-2.89h2.54V9.81c0-2.5 1.48-3.89 3.78-3.89 1.1 0 2.25.2 2.25.2v2.47h-1.27c-1.24 0-1.63.77-1.63 1.56v1.88h2.78l-.45 2.89h-2.33v6.99C18.34 21.12 22 16.99 22 12c0-5.52-4.48-10-10-10z" />
-                    </svg>
-                </div>
-                <span class="social-share-card__label">Facebook</span>
-            </button>
-            <button type="button" class="social-share-card" @click="shareInstagram">
-                <div class="social-share-card__icon-wrapper d-flex align-items-center justify-content-center">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
-                    </svg>
-                </div>
-                <span class="social-share-card__label">Instagram</span>
-            </button>
-        </div>
+
 
         <!-- Dashed Link Copy Bar -->
         <div class="copy-link-dashed-bar d-flex align-items-center justify-content-between mb-3">
