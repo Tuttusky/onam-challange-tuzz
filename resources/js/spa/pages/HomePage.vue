@@ -409,8 +409,8 @@ function clearError() {
     align-items: center;
     justify-content: space-between;
     gap: 0.75rem;
-    margin-bottom: 1rem;
-    min-height: 54px;
+    margin-bottom: 0.75rem;
+    min-height: 64px;
 }
 
 .brand {
@@ -421,11 +421,11 @@ function clearError() {
 }
 
 .brand__logo-img {
-    height: clamp(44px, 13.5vw, 72px);
-    max-width: min(65vw, 240px);
+    height: clamp(58px, 18vw, 98px);
+    max-width: min(72vw, 310px);
     width: auto;
     object-fit: contain;
-    filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.15));
+    filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.18));
 }
 
 .btn-help {

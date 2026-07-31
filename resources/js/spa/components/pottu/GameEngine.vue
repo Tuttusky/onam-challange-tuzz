@@ -788,7 +788,7 @@ function onImageError(image, event) {
     align-items: center;
     justify-content: space-between;
     gap: 0.75rem;
-    min-height: 52px;
+    min-height: 60px;
 }
 
 .brand {
@@ -799,11 +799,11 @@ function onImageError(image, event) {
 }
 
 .brand__logo-img {
-    height: clamp(40px, 12vw, 65px);
-    max-width: min(65vw, 230px);
+    height: clamp(52px, 16vw, 85px);
+    max-width: min(70vw, 280px);
     width: auto;
     object-fit: contain;
-    filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.15));
+    filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.18));
 }
 
 .btn-help {
