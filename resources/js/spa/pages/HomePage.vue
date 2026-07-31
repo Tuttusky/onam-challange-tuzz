@@ -416,12 +416,14 @@ function clearError() {
 .brand {
     display: flex;
     align-items: center;
+    flex-shrink: 1;
+    min-width: 0;
 }
 
 .brand__logo-img {
-    height: 52px;
+    height: clamp(34px, 9.5vw, 54px);
+    max-width: min(58vw, 190px);
     width: auto;
-    max-width: 190px;
     object-fit: contain;
     filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.12));
 }

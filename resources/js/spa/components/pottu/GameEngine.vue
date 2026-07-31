@@ -794,12 +794,14 @@ function onImageError(image, event) {
 .brand {
     display: flex;
     align-items: center;
+    flex-shrink: 1;
+    min-width: 0;
 }
 
 .brand__logo-img {
-    height: 48px;
+    height: clamp(32px, 9vw, 50px);
+    max-width: min(58vw, 180px);
     width: auto;
-    max-width: 180px;
     object-fit: contain;
     filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.12));
 }
