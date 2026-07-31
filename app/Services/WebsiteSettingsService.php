@@ -88,6 +88,8 @@ class WebsiteSettingsService
      */
     public static function getFriendChallengeSettings(): array
     {
+        $stored = static::get('friend_challenge_settings');
+
         $defaults = [
             'enable_photo_upload' => true,
             'enable_avatar_selection' => true,
