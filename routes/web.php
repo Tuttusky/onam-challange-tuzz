@@ -18,17 +18,28 @@ Route::get('/robots.txt', function (SeoService $seo) {
 
 Route::get('/run-migrations-secret', function () {
     try {
+        \Illuminate\Support\Facades\Artisan::call('config:clear');
+        \Illuminate\Support\Facades\Artisan::call('cache:clear');
+
+        $sqlitePath = database_path('database.sqlite');
+        if (!file_exists($sqlitePath)) {
+            @touch($sqlitePath);
+        }
+
         \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
         \Illuminate\Support\Facades\Artisan::call('db:seed', ['--force' => true]);
+
         return response()->json([
             'status' => 'success',
             'message' => 'Database migrated and seeded successfully!',
+            'db_connection' => config('database.default'),
             'output' => \Illuminate\Support\Facades\Artisan::output()
         ]);
     } catch (\Throwable $e) {
         return response()->json([
             'status' => 'error',
             'message' => $e->getMessage(),
+            'db_connection' => config('database.default'),
             'trace' => $e->getTraceAsString()
         ], 500);
     }
