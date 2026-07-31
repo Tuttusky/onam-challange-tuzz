@@ -4,7 +4,7 @@
 @endphp
 <aside class="admin-sidebar">
     <div class="admin-brand">
-        <small>Campaign Platform</small>
+        <img src="/images/logo.png" alt="Logo" style="height: 42px; width: auto; object-fit: contain; margin-bottom: 6px;" />
         <h1>Admin Panel</h1>
     </div>
 

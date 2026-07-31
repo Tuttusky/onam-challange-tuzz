@@ -154,9 +154,8 @@ function clearError() {
 
         <main class="home__main">
             <header class="topbar">
-                <div class="brand" aria-label="Pottu Challenge">
-                    <span class="brand__pottu">P<span class="brand__dot"></span>ottu</span>
-                    <span class="brand__challenge">Challenge</span>
+                <div class="brand" aria-label="Sundarikk Pottuthodal">
+                    <img src="/images/logo.png" alt="Sundarikk Pottuthodal" class="brand__logo-img" />
                 </div>
                 <button type="button" class="btn-help" aria-haspopup="dialog" @click="openHowTo">
                     <span class="btn-help__icon" aria-hidden="true">?</span>
@@ -416,33 +415,15 @@ function clearError() {
 
 .brand {
     display: flex;
-    flex-direction: column;
-    line-height: 1;
+    align-items: center;
 }
 
-.brand__pottu {
-    position: relative;
-    color: #ef4444;
-    font-size: 1.35rem;
-    font-weight: 900;
-    display: inline-block;
-}
-
-.brand__dot {
-    position: absolute;
-    top: 1px;
-    left: 42%;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: #dc2626;
-}
-
-.brand__challenge {
-    color: var(--orange);
-    font-size: 1.05rem;
-    font-weight: 900;
-    margin-top: 1px;
+.brand__logo-img {
+    height: 52px;
+    width: auto;
+    max-width: 190px;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.12));
 }
 
 .btn-help {
