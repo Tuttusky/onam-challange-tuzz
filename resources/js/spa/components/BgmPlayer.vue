@@ -13,7 +13,6 @@ function initAudio() {
     bgmAudio.loop = true;
     bgmAudio.volume = 0.45;
 
-    // Load state preference if saved
     const savedMuted = localStorage.getItem('bgm_muted');
     if (savedMuted === 'true') {
         isMuted.value = true;
@@ -29,13 +28,15 @@ function startBgm() {
         isPlaying.value = true;
         removeInteractionListeners();
     }).catch(() => {
-        // Autoplay blocked by browser policy — wait for user interaction
         isPlaying.value = false;
         addInteractionListeners();
     });
 }
 
-function toggleBgm() {
+function toggleBgm(e) {
+    if (e) {
+        e.stopPropagation();
+    }
     initAudio();
 
     if (isPlaying.value && !bgmAudio.paused) {
@@ -49,7 +50,7 @@ function toggleBgm() {
         localStorage.setItem('bgm_muted', 'false');
         bgmAudio.play().then(() => {
             isPlaying.value = true;
-        }).catch((e) => console.log('BGM Play Error:', e));
+        }).catch((err) => console.log('BGM Play Error:', err));
     }
 }
 
@@ -60,22 +61,30 @@ function handleUserInteraction() {
 }
 
 function addInteractionListeners() {
-    window.addEventListener('click', handleUserInteraction, { once: true });
-    window.addEventListener('touchstart', handleUserInteraction, { once: true });
-    window.addEventListener('keydown', handleUserInteraction, { once: true });
-    window.addEventListener('pointerdown', handleUserInteraction, { once: true });
+    const opts = { capture: true, passive: true, once: true };
+    window.addEventListener('touchstart', handleUserInteraction, opts);
+    window.addEventListener('touchend', handleUserInteraction, opts);
+    window.addEventListener('pointerdown', handleUserInteraction, opts);
+    window.addEventListener('click', handleUserInteraction, opts);
+    window.addEventListener('keydown', handleUserInteraction, opts);
+    document.addEventListener('touchstart', handleUserInteraction, opts);
+    document.addEventListener('click', handleUserInteraction, opts);
 }
 
 function removeInteractionListeners() {
-    window.removeEventListener('click', handleUserInteraction);
     window.removeEventListener('touchstart', handleUserInteraction);
-    window.removeEventListener('keydown', handleUserInteraction);
+    window.removeEventListener('touchend', handleUserInteraction);
     window.removeEventListener('pointerdown', handleUserInteraction);
+    window.removeEventListener('click', handleUserInteraction);
+    window.removeEventListener('keydown', handleUserInteraction);
+    document.removeEventListener('touchstart', handleUserInteraction);
+    document.removeEventListener('click', handleUserInteraction);
 }
 
 onMounted(() => {
     initAudio();
     startBgm();
+    addInteractionListeners();
 });
 
 onUnmounted(() => {
@@ -95,6 +104,7 @@ onUnmounted(() => {
             :class="{ 'bgm-toggle-btn--playing': isPlaying, 'bgm-toggle-btn--muted': isMuted || !isPlaying }"
             :aria-label="isPlaying ? 'Pause Background Music' : 'Play Background Music'"
             @click="toggleBgm"
+            @touchstart.stop="toggleBgm"
         >
             <span v-if="isPlaying && !isMuted" class="bgm-waves" aria-hidden="true">
                 <span class="bar bar--1"></span>
@@ -109,27 +119,28 @@ onUnmounted(() => {
 <style scoped>
 .bgm-toggle-btn {
     position: fixed;
-    top: 1.1rem;
-    right: 1.1rem;
+    top: 0.75rem;
+    right: 0.75rem;
     z-index: 99999;
-    width: 44px;
-    height: 44px;
+    width: 34px;
+    height: 34px;
     border-radius: 50%;
-    border: 1.5px solid rgba(255, 255, 255, 0.8);
-    background: rgba(15, 23, 42, 0.65);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.75);
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
     color: #ffffff;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
-    transition: transform 0.2s ease, background-color 0.2s ease;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.15s ease, background-color 0.15s ease;
+    touch-action: manipulation;
 }
 
 .bgm-toggle-btn:hover {
-    transform: scale(1.08);
+    transform: scale(1.06);
     background: rgba(15, 23, 42, 0.85);
 }
 
@@ -140,18 +151,18 @@ onUnmounted(() => {
 .bgm-toggle-btn--playing {
     border-color: rgba(245, 158, 11, 0.9);
     background: rgba(180, 83, 9, 0.85);
-    box-shadow: 0 4px 20px rgba(245, 158, 11, 0.4);
+    box-shadow: 0 3px 12px rgba(245, 158, 11, 0.35);
 }
 
 .bgm-waves {
     display: flex;
     align-items: flex-end;
-    gap: 3px;
-    height: 16px;
+    gap: 2px;
+    height: 13px;
 }
 
 .bar {
-    width: 3px;
+    width: 2.2px;
     background: #ffffff;
     border-radius: 99px;
     animation: sound-wave 1s ease-in-out infinite alternate;
@@ -173,7 +184,7 @@ onUnmounted(() => {
 }
 
 .bgm-icon {
-    font-size: 1.15rem;
+    font-size: 0.85rem;
     line-height: 1;
 }
 
