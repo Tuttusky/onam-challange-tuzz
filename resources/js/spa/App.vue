@@ -6,6 +6,7 @@ import { useUiStore } from '@/stores/ui';
 import { useTheme } from '@/composables/useTheme';
 import LoadingOverlay from '@/components/LoadingOverlay.vue';
 import AppSplashScreen from '@/components/AppSplashScreen.vue';
+import BgmPlayer from '@/components/BgmPlayer.vue';
 
 const route = useRoute();
 const campaignStore = useCampaignStore();
@@ -43,6 +44,7 @@ watch(
         :style="themeStyle"
     >
         <AppSplashScreen />
+        <BgmPlayer />
         <LoadingOverlay v-if="uiStore.loading" />
         <router-view v-slot="{ Component, route: currentRoute }">
             <transition name="page" mode="out-in">
